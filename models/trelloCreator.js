@@ -398,103 +398,45 @@ export class TrelloCreator {
       const comments = this.comments[card.id];
       if (comments) {
         comments.forEach(comment => {
-          const commentToCreate = {
-            boardId,
-            cardId,
-            createdAt: this._now(comment.date),
-            text: comment.data.text,
-            // we attribute the comment to the original author, default to current user
-            userId: this._user(comment.idMemberCreator),
-          };
-          // dateLastActivity will be set from activity insert, no need to
-          // update it ourselves
-          const commentId = CardComments.direct.insert(commentToCreate);
-          // We need to keep adding comment activities this way with Trello
-          // because it doesn't provide a comment ID
-          Activities.direct.insert({
-            activityType: 'addComment',
-            boardId: commentToCreate.boardId,
-            cardId: commentToCreate.cardId,
-            commentId,
-            createdAt: this._now(comment.date),
-            // we attribute the addComment (not the import)
-            // to the original author - it is needed by some UI elements.
-            userId: commentToCreate.userId,
-          });
-        });
-      }
-      const attachments = this.attachments[card.id];
-      const trelloCoverId = card.idAttachmentCover;
-      if (attachments && Meteor.isServer) {
-        attachments.forEach(att => {
-          const self = this;
-          const opts = {
-            type: att.type ? att.type : undefined,
-            userId: self._user(att.userId),
-            meta: {
+          let commentToCreate;
+          if (comment.data.attachment) {
+            commentToCreate = {
               boardId,
               cardId,
-              source: 'import',
-            },
-          };
-          const cb = (error, fileObj) => {
-            if (error) {
-              throw error;
-            }
-            self.attachmentIds[att._id] = fileObj._id;
-            if (trelloCoverId === att._id) {
-              Cards.direct.update(cardId, {
-                $set: { coverId: fileObj._id },
-              });
-            }
-          };
-          if (att.url) {
-            // If attachment only url just add to comment instead
-            const attachmentCommentToCreate = {
-              boardId,
-              cardId,
-              createdAt: this._now(att.date),
-              text: att.url,
+              createdAt: this._now(comment.date),
+              text: "[" + comment.data.attachment.name + "]" + "(" + comment.data.attachment.url + ")",
               // we attribute the comment to the original author, default to current user
-              userId: this._user(att.idMemberCreator),
+              userId: this._user(comment.idMemberCreator),
             };
+          } else {
+            commentToCreate = {
+              boardId,
+              cardId,
+              createdAt: this._now(comment.date),
+              text: comment.data.text,
+              // we attribute the comment to the original author, default to current user
+              userId: this._user(comment.idMemberCreator),
+            };
+          }
+
+          if ((comment.data.attachment && comment.data.attachment.url) || comment.data.text) {
             // dateLastActivity will be set from activity insert, no need to
             // update it ourselves
-            const attachmentCommentId = CardComments.direct.insert(attachmentCommentToCreate);
+            const commentId = CardComments.direct.insert(commentToCreate);
             // We need to keep adding comment activities this way with Trello
             // because it doesn't provide a comment ID
             Activities.direct.insert({
               activityType: 'addComment',
-              boardId: attachmentCommentToCreate.boardId,
-              cardId: attachmentCommentToCreate.cardId,
-              attachmentCommentId,
-              createdAt: attachmentCommentToCreate.createdAt,
+              boardId: commentToCreate.boardId,
+              cardId: commentToCreate.cardId,
+              commentId,
+              createdAt: this._now(comment.date),
               // we attribute the addComment (not the import)
               // to the original author - it is needed by some UI elements.
-              userId: attachmentCommentToCreate.userId,
+              userId: commentToCreate.userId,
             });
-          } else if (att.file) {
-            Attachment.write(att.file, opts, cb, true);
           }
         });
-
-        // if (links) {
-        //   if (links.length) {
-        //     let desc = cardToCreate.description.trim();
-        //     if (desc) {
-        //       desc += '\n\n';
-        //     }
-        //     desc += `## ${TAPi18n.__('links-heading')}\n`;
-        //     links.forEach(link => {
-        //       desc += `* ${link}\n`;
-        //     });
-        //     Cards.direct.update(cardId, {
-        //       $set: {
-        //         description: desc,
-        //       },
-        //     });
-        //   }
-        // }
       }
       result.push(cardId);
     });
@@ -629,24 +571,7 @@ export class TrelloCreator {
 
   parseActions(trelloActions) {
     trelloActions.forEach(action => {
-      if (action.type === 'addAttachmentToCard') {
-        // We have to be cautious, because the attachment could have been removed later.
-        // In that case Trello still reports its addition, but removes its 'url' field.
-        // So we test for that
-        const trelloAttachment = action.data.attachment;
-        // We need the idMemberCreator
-        trelloAttachment.date = action.date;
-        trelloAttachment.idMemberCreator = action.idMemberCreator;
-        if (trelloAttachment.url) {
-          // we cannot actually create the Wekan attachment, because we don't yet
-          // have the cards to attach it to, so we store it in the instance variable.
-          const trelloCardId = action.data.card.id;
-          if (!this.attachments[trelloCardId]) {
-            this.attachments[trelloCardId] = [];
-          }
-          this.attachments[trelloCardId].push(trelloAttachment);
-        }
-      } else if (action.type === 'commentCard') {
+      if (action.type === 'commentCard' || action.type === 'addAttachmentToCard') {
         const id = action.data.card.id;
         if (this.comments[id]) {
           this.comments[id].push(action);
