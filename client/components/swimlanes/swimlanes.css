@@ -46,6 +46,7 @@
   background: #dedede;
   display: flex;
   flex-direction: row;
+  overflow: 0;
   max-height: calc(100% - 26px);
 }
 .swimlane.placeholder {
@@ -84,6 +85,11 @@
   position: absolute;
   padding: 5px 5px;
   font-size: 22px;
+}
+@media print {
+  .swimlane .swimlane-header-wrap .swimlane-header-menu {
+    display: none;
+  }
 }
 .swimlane .swimlane-header-wrap .swimlane-header-plus-icon {
   margin-left: 5px;

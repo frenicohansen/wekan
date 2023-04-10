@@ -34,22 +34,22 @@ template(name="attachmentsGalery")
   .attachments-galery
     each attachments
       .attachment-item
-        a.attachment-thumbnail.swipebox(href="{{link}}" title="{{name}}")
+        a.attachment-thumbnail.swipebox(href="{{link}}" title="{{sanitize name}}")
           if link
             if isImage
-              img.attachment-thumbnail-img(src="{{link}}")
+              img.attachment-thumbnail-img(src="{{link}}" title="{{sanitize name}}")
             else if($eq extension 'mp3')
-                video(width="100%" height="100%" controls="true")
-                  source(src="{{link}}" type="audio/mpeg")
+              video(width="100%" height="100%" title="{{sanitize name}}" controls="true")
+                source(src="{{link}}" type="audio/mpeg")
             else if($eq extension 'ogg')
-                video(width="100%" height="100%" controls="true")
-                  source(src="{{link}}" type="video/ogg")
+              video(width="100%" height="100%" title="{{sanitize name}}" controls="true")
+                source(src="{{link}}" type="video/ogg")
             else if($eq extension 'webm')
-                video(width="100%" height="100%" controls="true")
-                  source(src="{{link}}" type="video/webm")
+              video(width="100%" height="100%" title="{{sanitize name}}" controls="true")
+                source(src="{{link}}" type="video/webm")
             else if($eq extension 'mp4')
-                video(width="100%" height="100%" controls="true")
-                  source(src="{{link}}" type="video/mp4")
+              video(width="100%" height="100%" title="{{sanitize name}}" controls="true")
+                source(src="{{link}}" type="video/mp4")
             else
               span.attachment-thumbnail-ext= extension
         p.attachment-details
@@ -101,6 +101,12 @@ template(name="attachmentActionsPopup")
             a.js-move-storage-gridfs
               i.fa.fa-arrow-right
               | {{_ 'attachment-move-storage-gridfs'}}
+
+        if $neq versions.original.storage "s3"
+          if versions.original.storage
+            a.js-move-storage-s3
+              i.fa.fa-arrow-right
+              | {{_ 'attachment-move-storage-s3'}}
 
 template(name="attachmentRenamePopup")
   input.js-edit-attachment-name(type='text' autofocus value="{{getNameWithoutExtension}}" dir="auto")

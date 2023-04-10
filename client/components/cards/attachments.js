@@ -1,3 +1,6 @@
+import { ObjectID } from 'bson';
+import DOMPurify from 'dompurify';
+
 const filesize = require('filesize');
 const prettyMilliseconds = require('pretty-ms');
 
@@ -18,6 +21,9 @@ Template.attachmentsGalery.helpers({
   fileSize(size) {
     const ret = filesize(size);
     return ret;
+  },
+  sanitize(value) {
+    return DOMPurify.sanitize(value);
   },
 });
 
@@ -46,7 +52,11 @@ Template.cardAttachmentsPopup.events({
     if (files) {
       let uploads = [];
       for (const file of files) {
-        const fileId = Random.id();
+        const fileId = new ObjectID().toString();
+        // If filename is not same as sanitized filename, has XSS, then cancel upload
+        if (file.name !== DOMPurify.sanitize(file.name)) {
+          return false;
+        }
         const config = {
           file: file,
           fileId: fileId,
@@ -130,7 +140,7 @@ Template.previewClipboardImagePopup.events({
     if (pastedResults && pastedResults.file) {
       const file = pastedResults.file;
       window.oPasted = pastedResults;
-      const fileId = Random.id();
+      const fileId = new ObjectID().toString();
       const config = {
         file,
         fileId: fileId,
@@ -189,6 +199,10 @@ BlazeComponent.extendComponent({
           Meteor.call('moveAttachmentToStorage', this.data()._id, "gridfs");
           Popup.back();
         },
+        'click .js-move-storage-s3'() {
+          Meteor.call('moveAttachmentToStorage', this.data()._id, "s3");
+          Popup.back();
+        },
       }
     ]
   }
@@ -214,7 +228,9 @@ BlazeComponent.extendComponent({
           const name = this.$('.js-edit-attachment-name')[0]
             .value
             .trim() + this.data().extensionWithDot;
-          Meteor.call('renameAttachment', this.data()._id, name);
+          if (name === DOMPurify.sanitize(name)) {
+            Meteor.call('renameAttachment', this.data()._id, name);
+          }
           Popup.back(2);
         },
       }

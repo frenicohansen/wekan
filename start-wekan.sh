@@ -11,7 +11,15 @@
       #---------------------------------------------
       # WRITEABLE PATH
       export WRITABLE_PATH=..
-      #---------------------------------------------
+      #-----------------------------------------------------------------
+      # ==== AWS S3 FOR FILES ====
+      # Any region. For example:
+      #   us-standard,us-west-1,us-west-2,
+      #   eu-west-1,eu-central-1,
+      #   ap-southeast-1,ap-northeast-1,sa-east-1
+      #
+      #export S3='{"s3":{"key": "xxx", "secret": "xxx", "bucket": "xxx", "region": "xxx"}}'
+      #-----------------------------------------------------------------
       # Production: https://example.com/wekan
       # Local: http://localhost:2000
       #export ipaddress=$(ifdata -pa eth0)
@@ -524,10 +532,11 @@
       #---------------------------------------------------------------------
       # https://github.com/wekan/wekan/issues/3585#issuecomment-1021522132
       # Add more Node heap:
-      export NODE_OPTIONS="--max_old_space_size=4096"
+      #export NODE_OPTIONS="--max_old_space_size=4096"
       # Add more stack:
       #bash -c "ulimit -s 65500; exec node --stack-size=65500 --trace-deprecation main.js"
-      bash -c "ulimit -s 65500; exec node --stack-size=65500 main.js"
+      #bash -c "ulimit -s 65500; exec node --stack-size=65500 main.js"
+      bash -c "ulimit -s 65500; exec node main.js"
       #node main.js
       #---------------------------------------------------------------------
       # & >> ../../wekan.log

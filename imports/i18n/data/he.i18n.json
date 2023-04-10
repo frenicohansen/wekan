@@ -845,6 +845,7 @@
     "r-df-received-at": "התקבל",
     "r-to-current-datetime": "לתאריך/שעה הנוכחיים",
     "r-remove-value-from": "הסרת ערך מתוך",
+    "r-link-card": "קישור הכרטיס אל",
     "ldap": "LDAP",
     "oauth2": "OAuth2",
     "cas": "CAS",
@@ -1174,11 +1175,14 @@
     "attachmentActionsPopup-title": "פעולות על קבצים מצורפים",
     "attachment-move-storage-fs": "העברת קבצים מצורפים למערכת הקבצים",
     "attachment-move-storage-gridfs": "העברת הקובץ המצורף ל־GridFS",
+    "attachment-move-storage-s3": "העברת הקובץ המצורף ל־S3",
     "attachment-move": "העברת קובץ מצורף",
     "move-all-attachments-to-fs": "העברת כל הקבצים המצורפים למערכת הקבצים",
     "move-all-attachments-to-gridfs": "העברת כל הקבצים המצורפים ל־GridFS",
+    "move-all-attachments-to-s3": "העברת כל הקבצים המצורפים ל־S3",
     "move-all-attachments-of-board-to-fs": "העברת כל הקבצים המצורפים ללוח למערכת הקבצים",
     "move-all-attachments-of-board-to-gridfs": "העברת כל הקבצים המצורפים ללוח ל־GridFS",
+    "move-all-attachments-of-board-to-s3": "העברת כל הקבצים שמצורפים ללוח ל־S3",
     "path": "נתיב",
     "version-name": "גרסה-שם",
     "size": "גודל",
@@ -1194,5 +1198,7 @@
     "if-you-already-have-an-account": "אם כבר יש לך חשבון",
     "register": "הרשמה",
     "forgot-password": "שכחתי סיסמה",
-    "minicardDetailsActionsPopup-title": "פרטי הכרטיס"
+    "minicardDetailsActionsPopup-title": "פרטי הכרטיס",
+    "Mongo_sessions_count": "כמות סשנים של Mongo",
+    "change-visibility": "שינוי מצב הצגה"
 }

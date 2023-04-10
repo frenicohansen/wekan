@@ -10,7 +10,7 @@ ENV DEBIAN_FRONTEND=noninteractive
 
 ENV \
     DEBUG=false \
-    NODE_VERSION=v14.21.1 \
+    NODE_VERSION=v14.21.3 \
     METEOR_RELEASE=1.10.2 \
     USE_EDGE=false \
     METEOR_EDGE=1.5-beta.17 \
@@ -143,7 +143,9 @@ ENV \
     SAML_LOCAL_PROFILE_MATCH_ATTRIBUTE="" \
     SAML_ATTRIBUTES="" \
     DEFAULT_WAIT_SPINNER="" \
-    NODE_OPTIONS="--max_old_space_size=4096"
+    S3=""
+# \
+#    NODE_OPTIONS="--max_old_space_size=4096"
 
 #---------------------------------------------------------------------
 # https://github.com/wekan/wekan/issues/3585#issuecomment-1021522132

@@ -1,4 +1,5 @@
 import escapeForRegex from 'escape-string-regexp';
+import DOMPurify from 'dompurify';
 
 CardComments = new Mongo.Collection('card_comments');
 
@@ -101,39 +102,43 @@ CardComments.helpers({
   },
 
   toggleReaction(reactionCodepoint) {
-
-    const cardCommentReactions = CardCommentReactions.findOne({cardCommentId: this._id});
-    const reactions = !!cardCommentReactions ? cardCommentReactions.reactions : [];
-    const userId = Meteor.userId();
-    const reaction = reactions.find(r => r.reactionCodepoint === reactionCodepoint);
-
-    // If no reaction is set for the codepoint, add this
-    if (!reaction) {
-      reactions.push({ reactionCodepoint, userIds: [userId] });
+    if (reactionCodepoint !== DOMPurify.sanitize(reactionCodepoint)) {
+      return false;
     } else {
 
-      // toggle user reaction upon previous reaction state
-      const userHasReacted = reaction.userIds.includes(userId);
-      if (userHasReacted) {
-        reaction.userIds.splice(reaction.userIds.indexOf(userId), 1);
-        if (reaction.userIds.length === 0) {
-          reactions.splice(reactions.indexOf(reaction), 1);
-        }
+      const cardCommentReactions = CardCommentReactions.findOne({cardCommentId: this._id});
+      const reactions = !!cardCommentReactions ? cardCommentReactions.reactions : [];
+      const userId = Meteor.userId();
+      const reaction = reactions.find(r => r.reactionCodepoint === reactionCodepoint);
+
+      // If no reaction is set for the codepoint, add this
+      if (!reaction) {
+        reactions.push({ reactionCodepoint, userIds: [userId] });
       } else {
-        reaction.userIds.push(userId);
-      }
-    }
 
-    // If no reaction doc exists yet create otherwise update reaction set
-    if (!!cardCommentReactions) {
-      return CardCommentReactions.update({ _id: cardCommentReactions._id }, { $set: { reactions } });
-    } else {
-      return CardCommentReactions.insert({
-        boardId: this.boardId,
-        cardCommentId: this._id,
-        cardId: this.cardId,
-        reactions
-      });
+        // toggle user reaction upon previous reaction state
+        const userHasReacted = reaction.userIds.includes(userId);
+        if (userHasReacted) {
+          reaction.userIds.splice(reaction.userIds.indexOf(userId), 1);
+          if (reaction.userIds.length === 0) {
+            reactions.splice(reactions.indexOf(reaction), 1);
+          }
+        } else {
+          reaction.userIds.push(userId);
+        }
+      }
+
+      // If no reaction doc exists yet create otherwise update reaction set
+      if (!!cardCommentReactions) {
+        return CardCommentReactions.update({ _id: cardCommentReactions._id }, { $set: { reactions } });
+      } else {
+        return CardCommentReactions.insert({
+          boardId: this.boardId,
+          cardCommentId: this._id,
+          cardId: this.cardId,
+          reactions
+        });
+      }
     }
   }
 });
@@ -235,9 +240,9 @@ if (Meteor.isServer) {
     res,
   ) {
     try {
-      Authentication.checkUserId(req.userId);
       const paramBoardId = req.params.boardId;
       const paramCardId = req.params.cardId;
+      Authentication.checkBoardAccess(req.userId, paramBoardId);
       JsonRoutes.sendResult(res, {
         code: 200,
         data: CardComments.find({
@@ -273,10 +278,10 @@ if (Meteor.isServer) {
     '/api/boards/:boardId/cards/:cardId/comments/:commentId',
     function (req, res) {
       try {
-        Authentication.checkUserId(req.userId);
         const paramBoardId = req.params.boardId;
         const paramCommentId = req.params.commentId;
         const paramCardId = req.params.cardId;
+        Authentication.checkBoardAccess(req.userId, paramBoardId);
         JsonRoutes.sendResult(res, {
           code: 200,
           data: CardComments.findOne({
@@ -309,9 +314,9 @@ if (Meteor.isServer) {
     '/api/boards/:boardId/cards/:cardId/comments',
     function (req, res) {
       try {
-        Authentication.checkUserId(req.userId);
         const paramBoardId = req.params.boardId;
         const paramCardId = req.params.cardId;
+        Authentication.checkBoardAccess(req.userId, paramBoardId);
         const id = CardComments.direct.insert({
           userId: req.body.authorId,
           text: req.body.comment,
@@ -355,10 +360,10 @@ if (Meteor.isServer) {
     '/api/boards/:boardId/cards/:cardId/comments/:commentId',
     function (req, res) {
       try {
-        Authentication.checkUserId(req.userId);
         const paramBoardId = req.params.boardId;
         const paramCommentId = req.params.commentId;
         const paramCardId = req.params.cardId;
+        Authentication.checkBoardAccess(req.userId, paramBoardId);
         CardComments.remove({
           _id: paramCommentId,
           cardId: paramCardId,

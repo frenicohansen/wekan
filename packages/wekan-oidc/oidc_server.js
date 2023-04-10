@@ -81,7 +81,6 @@ OAuth.registerService('oidc', 2, null, function (query) {
 
   //temporarily store data from oidc in user.services.oidc.groups to update groups
   serviceData.groups = (userinfo["groups"] && userinfo["wekanGroups"]) ? userinfo["wekanGroups"] : userinfo["groups"];
-
   // groups arriving as array of strings indicate there is no scope set in oidc privider
   // to assign teams and keep admin privileges
   // data needs to be treated  differently.
@@ -105,6 +104,11 @@ OAuth.registerService('oidc', 2, null, function (query) {
       }
     });
   }
+
+  // Fix OIDC login loop for integer user ID. Thanks to danielkaiser.
+  // https://github.com/wekan/wekan/issues/4795
+  Meteor.call('groupRoutineOnLogin',serviceData, ""+serviceData.id);
+
   return {
     serviceData: serviceData,
     options: { profile: profile }
@@ -285,9 +289,9 @@ Meteor.methods({
     var propagateOidcData = process.env.PROPAGATE_OIDC_DATA || false;
     if (propagateOidcData)
     {
-
       users= Meteor.users;
-      user = users.findOne({'_id':  userId});
+      user = users.findOne({'services.oidc.id':  userId});
+
       if(user)
       {
         //updates/creates Groups and user admin privileges accordingly

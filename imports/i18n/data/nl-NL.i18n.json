@@ -845,6 +845,7 @@
     "r-df-received-at": "ontvangen",
     "r-to-current-datetime": "naar huidige datum/tijd",
     "r-remove-value-from": "Verwijder waarde van",
+    "r-link-card": "Link card to",
     "ldap": "LDAP",
     "oauth2": "OAuth2",
     "cas": "CAS",
@@ -1174,11 +1175,14 @@
     "attachmentActionsPopup-title": "Bijlage Acties",
     "attachment-move-storage-fs": "Verplaats bijlage naar bestandssysteem",
     "attachment-move-storage-gridfs": "Verplaats bijlage naar GridFS",
+    "attachment-move-storage-s3": "Move attachment to S3",
     "attachment-move": "Verplaats Bijlage",
     "move-all-attachments-to-fs": "Verplaats alle bijlagen naar bestandssysteem",
     "move-all-attachments-to-gridfs": "Verplaats alle bijlagen naar GridFS",
+    "move-all-attachments-to-s3": "Move all attachments to S3",
     "move-all-attachments-of-board-to-fs": "Verplaats alle bijlagen van bord naar bestandssysteem",
     "move-all-attachments-of-board-to-gridfs": "Verplaats alle bijlagen van bord naar GridFS",
+    "move-all-attachments-of-board-to-s3": "Move all attachments of board to S3",
     "path": "Pad",
     "version-name": "Versie-Naam",
     "size": "Grootte",
@@ -1194,5 +1198,7 @@
     "if-you-already-have-an-account": "If you already have an account",
     "register": "Register",
     "forgot-password": "Forgot password",
-    "minicardDetailsActionsPopup-title": "Kaart Details"
+    "minicardDetailsActionsPopup-title": "Kaart Details",
+    "Mongo_sessions_count": "Mongo sessions count",
+    "change-visibility": "Wijzig zichtbaarheid"
 }

@@ -845,6 +845,7 @@
     "r-df-received-at": "已接收",
     "r-to-current-datetime": "到当前日期/时间",
     "r-remove-value-from": "从变量中移动",
+    "r-link-card": "Link card to",
     "ldap": "LDAP",
     "oauth2": "OAuth2",
     "cas": "CAS",
@@ -1174,11 +1175,14 @@
     "attachmentActionsPopup-title": "附件操作",
     "attachment-move-storage-fs": "移动附件到filesystem",
     "attachment-move-storage-gridfs": "移动附件到GridFS",
+    "attachment-move-storage-s3": "Move attachment to S3",
     "attachment-move": "移动附件",
     "move-all-attachments-to-fs": "移动所有附件到filesystem",
     "move-all-attachments-to-gridfs": "移动所有附件到GridFS",
+    "move-all-attachments-to-s3": "Move all attachments to S3",
     "move-all-attachments-of-board-to-fs": "移动所有看板附件到filesystem",
     "move-all-attachments-of-board-to-gridfs": "移动所有看板附件到GridFS",
+    "move-all-attachments-of-board-to-s3": "Move all attachments of board to S3",
     "path": "路径",
     "version-name": "版本名称",
     "size": "大小",
@@ -1194,5 +1198,7 @@
     "if-you-already-have-an-account": "如果账号已存在",
     "register": "注册",
     "forgot-password": "忘记密码",
-    "minicardDetailsActionsPopup-title": "卡片详情"
+    "minicardDetailsActionsPopup-title": "卡片详情",
+    "Mongo_sessions_count": "Mongo sessions count",
+    "change-visibility": "更改可视级别"
 }

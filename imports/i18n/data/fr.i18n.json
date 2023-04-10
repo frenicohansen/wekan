@@ -845,6 +845,7 @@
     "r-df-received-at": "reçu",
     "r-to-current-datetime": "à la date/heure courante",
     "r-remove-value-from": "Supprimer la valeur de",
+    "r-link-card": "Lier la carte à",
     "ldap": "LDAP",
     "oauth2": "OAuth2",
     "cas": "CAS",
@@ -1174,11 +1175,14 @@
     "attachmentActionsPopup-title": "Actions sur les pièces jointes",
     "attachment-move-storage-fs": "Déplacer la pièce jointe vers le système de fichier",
     "attachment-move-storage-gridfs": "Déplacer la pièce jointe vers GridFS",
+    "attachment-move-storage-s3": "Déplacer la pièce jointe vers S3",
     "attachment-move": "Déplacer la pièce jointe",
     "move-all-attachments-to-fs": "Déplacer toutes les pièces jointes vers le système de fichier",
     "move-all-attachments-to-gridfs": "Déplacer toutes les pièces jointes vers GridFS",
+    "move-all-attachments-to-s3": "Déplacer toutes les pièces jointes vers S3",
     "move-all-attachments-of-board-to-fs": "Déplacer toutes les pièces jointes du tableau vers le système de fichier",
     "move-all-attachments-of-board-to-gridfs": "Déplacer toutes les pièces jointes du tableau vers GridFS",
+    "move-all-attachments-of-board-to-s3": "Déplacer toutes les pièces jointes du tableau vers S3",
     "path": "Chemin",
     "version-name": "Version-Nom",
     "size": "Taille",
@@ -1194,5 +1198,7 @@
     "if-you-already-have-an-account": "Si vous avez déjà un compte",
     "register": "S'enregistrer",
     "forgot-password": "Mot de passe oublié",
-    "minicardDetailsActionsPopup-title": "Détails de la carte"
+    "minicardDetailsActionsPopup-title": "Détails de la carte",
+    "Mongo_sessions_count": "Nombre de sessions Mongo",
+    "change-visibility": "Changer la visibilité"
 }

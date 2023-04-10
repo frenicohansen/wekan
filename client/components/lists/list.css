@@ -88,6 +88,12 @@
 .list-header .list-header-menu {
   float: right;
 }
+@media print {
+  .list-header .list-header-menu,
+  .list-header .list-header-menu-icon {
+    display: none;
+  }
+}
 .list-header .list-header-plus-top {
   color: #a6a6a6;
   margin-right: 15px;
@@ -106,6 +112,9 @@
   color: #4d4d4d;
   padding-left: 4px;
 }
+.js-open-list-menu {
+  font-size: 18px;
+}
 .list-body {
   flex: 1 1 auto;
   flex-direction: column;
@@ -120,6 +129,9 @@
 .list-body .minicards form {
   margin-bottom: 9px;
 }
+.list-body .minicards .add-controls button {
+  min-height: 50px;
+}
 .list-body .open-minicard-composer {
   border-radius: 2px;
   color: #8c8c8c;
@@ -128,6 +140,11 @@
   position: relative;
   text-decoration: none;
   animation: fadeIn 0.3s;
+}
+@media print {
+  .list-body .open-minicard-composer {
+    display: none;
+  }
 }
 .list-body .open-minicard-composer i.fa {
   margin-right: 7px;
@@ -159,7 +176,7 @@
 #js-wip-limit-edit div {
   float: left;
 }
-@media screen and (max-width: 250px) {
+@media screen and (max-width: 800px) {
   .mini-list {
     flex: 0 0 60px;
     height: auto;

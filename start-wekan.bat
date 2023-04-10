@@ -15,6 +15,14 @@ REM Writable path for temporary saving attachments during migration to Meteor-Fi
 REM Create directory wekan-uploads
 SET WRITABLE_PATH=..
 
+REM # ==== AWS S3 FOR FILES ====
+REM # Any region. For example:
+REM #   us-standard,us-west-1,us-west-2,
+REM #   eu-west-1,eu-central-1,
+REM #   ap-southeast-1,ap-northeast-1,sa-east-1
+REM #
+REM SET S3='{"s3":{"key": "xxx", "secret": "xxx", "bucket": "xxx", "region": "eu-west-1"}}'
+
 REM # https://github.com/wekan/wekan/wiki/Troubleshooting-Mail
 REM SET MAIL_URL=smtps://username:password@email-smtp.eu-west-1.amazonaws.com:587/
 REM SET MAIL_FROM="Wekan Boards <info@example.com>"
@@ -482,7 +490,8 @@ REM SET WAIT_SPINNER=Bounce
 
 REM # https://github.com/wekan/wekan/issues/3585#issuecomment-1021522132
 REM # Add more Node heap:
-SET NODE_OPTIONS="--max_old_space_size=4096"
+REM # SET NODE_OPTIONS="--max_old_space_size=4096"
 REM # Add more stack. ulimit is not at Windows, stack-size is at Windows:
 REM #   bash -c "ulimit -s 65500; exec node --stack-size=65500 main.js"
-node --stack-size=65500 main.js
+REM #node --stack-size=65500 main.js
+node main.js
